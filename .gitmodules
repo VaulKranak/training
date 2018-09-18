@@ -1,6 +1,3 @@
-[submodule "object_detection/detectron"]
-	path = object_detection/caffe2/detectron
-	url = https://github.com/ddkang/Detectron.git
 [submodule "community"]
 	path = community
 	url = https://github.com/mlperf/community.git
