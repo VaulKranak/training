@@ -4,6 +4,6 @@
 [submodule "object_detection/pytorch/pytorch"]
 	path = object_detection/pytorch/pytorch
 	url = https://github.com/pytorch/pytorch.git
-[submodule "object_detection/pytorch/object_detection/pytorch/detectron"]
-	path = object_detection/pytorch/object_detection/pytorch/detectron
+[submodule "object_detection/pytorch/detectron"]
+	path = object_detection/pytorch/detectron
 	url = https://github.com/ddkang/Detectron.git
