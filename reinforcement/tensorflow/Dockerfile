@@ -24,6 +24,6 @@ WORKDIR /research/reinforcement
 RUN pip3 install --upgrade pip
 RUN pip3 install --upgrade setuptools
 RUN pip3 install -r minigo/requirements.txt
-#RUN pip3 install "tensorflow-gpu>=1.5,<1.6"
+RUN pip3 install tensorflow-gpu
 
 ENTRYPOINT ["/bin/bash"]
