@@ -23,3 +23,7 @@ sudo apt-get update
 sudo apt install nvidia-docker2 -y
 sudo pkill -SIGHUP dockerd
 
+# Setup docker permissions
+sudo groupadd docker
+sudo usermod -aG docker $USER
+echo -e "\e[34Log out to reset the permmisions"
