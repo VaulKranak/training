@@ -1,3 +1,5 @@
+#!/bin/bash
+
 sudo cp config.json ~/.docker/config.json
 sudo cp docker /etcdefault/docker
 sudo cp docker.service /libsystemd/system/docker.service
