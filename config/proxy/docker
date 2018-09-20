@@ -11,7 +11,7 @@
 #DOCKERD="/usr/local/bin/dockerd"
 
 # Use DOCKER_OPTS to modify the daemon startup options.
-DOCKER_OPTS="--dns 127.0.1.1 --dns 192.168.1.253 --dns 8.8.8.8 --dns 8.8.4.4"
+DOCKER_OPTS="--dns 192.168.1.253 --dns 127.0.1.1 --dns 8.8.8.8 --dns 8.8.4.4"
 
 # If you need Docker to use an HTTP proxy, it can also be specified here.
 export http_proxy="http://proxy.jf.intel.com:911"
