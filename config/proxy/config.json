@@ -4,7 +4,7 @@
     "default":
     {
       "httpProxy":"http://proxy.jf.intel.com:911",
-      "httpsProxy":"http://proxy.jf.intel.com:912"
+      "httpsProxy":"https://proxy.jf.intel.com:912"
     }
   }
 }
