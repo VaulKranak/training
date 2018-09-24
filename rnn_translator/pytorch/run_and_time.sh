@@ -17,7 +17,7 @@ procesor=${2:-"gpu"}
 target=21.80
 
 echo "running benchmark"
-./run#procesor.sh $seed $target
+./run$procesor.sh $seed $target
 
 sleep 3
 ret_code=$?; if [[ $ret_code != 0 ]]; then exit $ret_code; fi
