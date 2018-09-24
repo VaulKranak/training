@@ -13,6 +13,7 @@ echo "STARTING TIMING RUN AT $start_fmt"
 
 # run benchmark
 seed=${1:-"1"}
+procesor=${2:-"gpu"}
 target=21.80
 
 echo "running benchmark"
