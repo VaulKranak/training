@@ -1,0 +1,1 @@
+sudo docker build --build-arg A_NO_CUDA=1 -t detectron:cpu .
