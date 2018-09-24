@@ -1,5 +1,9 @@
 FROM nvidia/cuda:9.1-cudnn7-devel-ubuntu16.04
 
+ARG A_NO_CUDA=1
+ENV NO_CUDA=$A_NO_CUDA
+
+
 # Set working directory
 WORKDIR /mlperf
 
@@ -30,7 +34,6 @@ RUN mkdir github
 WORKDIR /mlperf/github
 RUN git clone --recursive https://github.com/pytorch/pytorch
 WORKDIR /mlperf/github/pytorch
-RUN git checkout v0.4.0
 RUN git submodule update --init
 RUN python setup.py clean
 RUN python setup.py install
