@@ -1,4 +1,4 @@
-FROM nvidia/cuda:9.0-cudnn7-runtime-ubuntu16.04
+FROM nvidia/cuda:10.0-cudnn7-runtime-ubuntu16.04
 
 RUN apt update && apt -y upgrade
 
@@ -22,3 +22,5 @@ RUN apt install git && \
 	git clone --recursive https://github.com/pytorch/pytorch && \
 	cd /pytorch  && \
 	python setup.py install
+
+ENV PYTHONPATH=/packages/pytorch/build:$PYTHONPATH

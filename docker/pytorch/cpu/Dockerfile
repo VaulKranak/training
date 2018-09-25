@@ -19,3 +19,5 @@ RUN apt install git && \
 	git clone --recursive https://github.com/pytorch/pytorch && \
 	cd /pytorch  && \
 	python setup.py install
+
+ENV PYTHONPATH=/packages/pytorch/build:$PYTHONPATH
