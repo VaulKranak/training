@@ -201,6 +201,8 @@ if __name__ == '__main__':
                         help="Target validation quality to stop training")
     parser.add_argument('-s', '--seed', type=int, required=False, default=1,
                         help="Seed for random number generator")
+    parser.add_argument('--no-cuda', action='store_true',
+                        help='run on cpu')
 
     word_dict = paddle.dataset.imdb.word_dict()
     args = parser.parse_args()
@@ -208,14 +210,14 @@ if __name__ == '__main__':
     if args.model == 'conv':
         main(word_dict,
              net_method=convolution_net,
-             use_cuda=True, # Runs on CPU if "False"
+             use_cuda=not args.no_cuda, # Runs on CPU if "False"
              seed=args.seed,
              quality=args.target_quality,
              save_dirname="understand_sentiment_conv.inference.model")
     else:
         main(word_dict,
              use_method=stacked_lstm_net,
-             use_cuda=True,
+             use_cuda=not args.no_cuda,
              seed=args.seed,
              quality=args.target_quality,
              save_dirname="understand_sentiment_lstm.inference.model")
