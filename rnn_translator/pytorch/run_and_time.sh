@@ -13,10 +13,12 @@ echo "STARTING TIMING RUN AT $start_fmt"
 
 # run benchmark
 seed=${1:-"1"}
+processor=${2:-"gpu"}
 target=21.80
 
-echo "running benchmark"
-./run.sh $seed $target
+echo $processor
+echo "running benchmark $processor"
+./run_$processor.sh $seed $target
 
 sleep 3
 ret_code=$?; if [[ $ret_code != 0 ]]; then exit $ret_code; fi

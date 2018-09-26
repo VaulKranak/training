@@ -9,4 +9,4 @@ sed -i "s/install tensorflow.*/install tensorflow-gpu/g" Dockerfile
 IMAGE=`sudo docker build . | tail -n 1 | awk '{print $3}'`
 SEED=1
 NOW=`date "+%F-%T"`
-sudo docker run --runtime=nvidia -t -i $IMAGE "./run_and_time.sh" $SEED | tee benchmark-$NOW.log
+sudo docker run --runtime=nvidia -t -i $IMAGE "./run_and_time.sh" $SEED | tee benchmark-gpu-$NOW.log
