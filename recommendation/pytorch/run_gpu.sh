@@ -1,8 +1,9 @@
 #!/bin/bash
 
 SEED=1
-NOW=date "+%F-%T"
+NOW='date "+%F-%T"'
+PROCESSOR=gpu
 
 sudo nvidia-docker run -i -t --rm --ipc=host \
     --mount "type=bind,source=$(pwd),destination=/mlperf/experiment" \
-    mlperf/recommendation:gpu $SEED | tee benchmark-gpu-$NOW.log
+    mlperf/recommendation:$PROCESSOR $SEED | tee benchmark-$PROCESSOR-$NOW.log

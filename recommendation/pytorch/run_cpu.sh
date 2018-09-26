@@ -1,7 +1,7 @@
 #!/bin/bash
 
 SEED=1
-NOW=date "+%F-%T"
+NOW='date "+%F-%T"'
 PROCESSOR=cpu
 
 sudo nvidia-docker run -i -t --rm --ipc=host \
