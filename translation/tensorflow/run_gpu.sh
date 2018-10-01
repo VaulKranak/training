@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PROCESSOR=cpu
+PROCESSOR=gpu
 IMAGE=mlperf/translation:$PROCESSOR
 SEED=1
 NOW=`date "+%F-%T"`
