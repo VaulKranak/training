@@ -1,6 +1,8 @@
 #!/bin/bash
 script_dir=$(dirname $0)
 
+sudo setup_intel_proxy.sh
+
 sudo [ -d ~/.docker ] && echo ~/.docker exists || mkdir ~/.docker
 sudo cp $script_dir/config.json ~/.docker/config.json
 sudo cp $script_dir/docker /etc/default/docker
