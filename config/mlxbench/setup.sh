@@ -41,3 +41,9 @@ sudo chown -R $USER:$USER ~/MLxBench
 export MLX_HOME=$HOME/MLxBench/
 cd $MLX_HOME
 
+echo copy run config files
+sudo rm $MLX_HOME/Config/*
+cp Config/* $MLX_HOME/Config/
+
+
+
