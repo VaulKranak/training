@@ -23,10 +23,14 @@
 #
 
 PS3='Select the closest proxy server to this system: '
-proxys=("United States" "India" "Israel" "Ireland" "Germany" "Malaysia" "China")
+proxys=("United States" "India" "Israel" "Ireland" "Germany" "Malaysia" "China" "Jones Farm")
 select proxy in "${proxys[@]}"
 do
-  case $proxy in
+  case $proxy in	  
+    "Jones Farm")
+      server="proxy.jf.intel.com"
+      break
+      ;;
     "United States")
       server="proxy-us.intel.com"
       break
