@@ -35,4 +35,8 @@
 .Spotlight-V100
 .Trashes
 ehthumbs.db
-Thumbs.db
+Thumbs.dbrecommendation/pytorch/ml-20m
+translation/raw_data/
+recommendation/pytorch/ml-20m/
+translation/tensorflow/newstest2014.de
+translation/tensorflow/newstest2014.en
