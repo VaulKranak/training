@@ -8,7 +8,7 @@ SCRIPTDIR="$(pwd)"
 PACKAGENAME=intel-opencl_18.26.10987_amd64.deb
 PACKAGEPATH=$SCRIPTDIR/$PACKAGENAME
 
-echo *** checking if opencl package exists ***
+echo "*** checking if intel opencl package exists ***"
 
 if [[ ! -f $PACKAGEPATH ]] ; then
 	echo $PACKAGEPATH missing
@@ -16,6 +16,7 @@ if [[ ! -f $PACKAGEPATH ]] ; then
 	exit
 fi
 
+echo "*** installing intel opencl package ***"
 sudo apt-get remove intel-opencl
 sudo dpkg -i intel-opencl_18.26.10987_amd64.deb
 

@@ -8,7 +8,8 @@ DEPENDANCIES=(cuda/cuda-9.2 tensorrt opencl-neo)
 PACKAGENAME=MLxBench_DeepLearning_Intel_DL_SDK.deb
 PACKAGEPATH=$SCRIPTDIR/$PACKAGENAME
 
-echo *** checking if mlxbench package exists ***
+
+echo "*** checking if mlxbench package exists ***"
 
 if [[ ! -f $PACKAGEPATH ]] ; then
 	echo $PACKAGEPATH missing
@@ -16,31 +17,33 @@ if [[ ! -f $PACKAGEPATH ]] ; then
 	exit
 fi
 
-echo *** Installing DEPENDANCIES ***
+echo "*** Installing DEPENDANCIES ***"
 
-for dir in $DEPENDANCIES
+for dependfolder in $DEPENDANCIES
 do
-	echo *** installing $dir ***
-	[ -f ../"$dir"/install.sh ] && ../"$dir"/install.sh || *** missing dependancy $dir ***
+	echo "*** installing $dependfolder ***"
+	[ -f ../"$dependfolder"/install.sh ] \
+		&& ../"$dependfolder"/install.sh \
+		|| echo "*** missing dependancy $dependfolder ***"
 done
 
 echo installing opencl tool
 echo type clinfo to see the opencl proccessor and information on the system
 sudo apt-get install clinfo
 
-echo *** Installing MLxBench ***
+echo "*** Installing MLxBench ***"
 
 sudo dpkg -i $PACKAGEPATH
 sudo apt-get -f install
 sudo apt-get update
 
-echo *** setting up permissions ***
+echo "*** setting up permissions ***"
 
 sudo chmod -R 777 ~/MLxBench
 sudo chown -R $USER:$USER ~/MLxBench
 export MLX_HOME=$HOME/MLxBench/
 
-echo **** copy run config files ***
+echo "**** copy run config files ***"
 sudo rm "$MLX_HOME"Config/*
 cp $SCRIPTDIR/Config/* $MLX_HOME/Config/
 
