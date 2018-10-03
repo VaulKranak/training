@@ -1,7 +1,10 @@
 #!/bin/bash
-script_dir=$(dirname $0)
 
-sudo setup_intel_proxy.sh
+call_dir=$(pwd)
+cd $(dirname $0)
+script_dir=$(pwd)
+
+$script_dir/setup_intel_proxy.sh
 
 sudo [ -d ~/.docker ] && echo ~/.docker exists || mkdir ~/.docker
 sudo cp $script_dir/config.json ~/.docker/config.json
@@ -13,3 +16,5 @@ sudo cp $script_dir/NetworkManager.conf /etc/NetworkManager/NetworkManager.conf
 sudo systemctl daemon-reload
 sudo systemctl restart docker
 sudo systemctl restart network-manager
+
+cd $call_dir

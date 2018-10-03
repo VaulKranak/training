@@ -19,7 +19,7 @@ fi
 
 echo "*** Installing DEPENDANCIES ***"
 
-for dependfolder in $DEPENDANCIES
+for dependfolder in ${DEPENDANCIES[@]}
 do
 	echo "*** installing $dependfolder ***"
 	[ -f ../"$dependfolder"/install.sh ] \

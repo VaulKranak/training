@@ -3,6 +3,8 @@ FROM ubuntu:16.04
 # python 3 and python 2 are pre-installed in 16.04
 RUN apt update && apt -y upgrade
 
-RUN apt install python-pip && pip install --upgrade pip
+RUN apt-get install -y python3-pip 
+RUN python3 -m pip install --upgrade pip
 
-RUN pip install --upgrade tensorflow && python -c "import tensorflow as tf; print(tf.__version__)"
+RUN pip3 install tensorflow
+#RUN python -c "import tensorflow as tf; print(tf.__version__)"

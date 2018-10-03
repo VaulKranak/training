@@ -1,16 +1,17 @@
 #!/bin/bash
 
-SCRIPTDIR="$(dirname "$0")"
 CALLDIR="$(pwd)"
+cd $(dirname "$0")
+SCRIPTDIR="$(pwd)"
 
-DEPENDACIES=(bridge-utils docker nvidia-docker proxy cuda)
+DEPENDACIES=("docker" "nvidia-docker" "proxy" "cuda" "bridge-utils")
 
-cd SCRIPTDIR
+cd $SCRIPTDIR
 
-for dir in DEPENDACIES
+for dependPath in ${DEPENDACIES[@]}
 do
-	echo installing $dir
-	../"$dir"/install.sh
+	echo "*** installing $dependPath ***" 
+	../"$dependPath"/install.sh
 done
 
-cd CALLDIR
+cd $CALLDIR

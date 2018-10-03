@@ -42,3 +42,9 @@ translation/tensorflow/newstest2014.de
 translation/tensorflow/newstest2014.en
 speech_recognition/data/
 speech_recognition/test-clean.tar.gzAnLZxZ.tmp
+../../speech_recognition/libri_test_manifest.csv
+../../speech_recognition/train-clean-100.tar.gzNZdc31.tmp
+../../speech_recognition/
+speech_recognition/LibriSpeech_dataset/
+speech_recognition/libri_test_manifest.csv
+speech_recognition/train-clean-100.tar.gzNZdc31.tmp
