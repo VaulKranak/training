@@ -20,7 +20,7 @@ RUN $CONDAPATH install -c pytorch magma-cuda90 # [magma-cuda<ver>] depending on 
 
 RUN apt install git && \
 	git clone --recursive https://github.com/pytorch/pytorch && \
-	cd /pytorch  && \
+	cd pytorch  && \
 	python setup.py install
 
 ENV PYTHONPATH=/packages/pytorch/build:$PYTHONPATH
