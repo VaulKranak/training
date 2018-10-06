@@ -1,23 +1,50 @@
 FROM ubuntu:16.04
 
-RUN apt update && apt -y upgrade
+ARG A_NO_CUDA=1
+ENV NO_CUDA=$A_NO_CUDA
 
-ARG CONDAPATH = /opt/conda
+# Pytorch depends
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends \
+      build-essential \
+      cmake \
+      git \
+      libgoogle-glog-dev \
+      libgtest-dev \
+      libiomp-dev \
+      libleveldb-dev \
+      liblmdb-dev \
+      libopencv-dev \
+      libopenmpi-dev \
+      libsnappy-dev \
+      libprotobuf-dev \
+      openmpi-bin \
+      openmpi-doc \
+      protobuf-compiler \
+      python-dev \
+      python-pip
 
-RUN curl -o ~/miniconda.sh -O  https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh  && \
-     chmod +x ~/miniconda.sh && \
-     ~/miniconda.sh -b -p $CONDAPATH && \
-     rm ~/miniconda.sh
+RUN apt-get install -y --no-install-recommends libgflags-dev
 
-ENV PATH $CONDAPATH/bin:$PATH
+RUN python -m pip install --upgrade pip
+RUN pip install setuptools
 
-# Install basic dependencies
-RUN $CONDAPATH install numpy pyyaml mkl mkl-include setuptools cmake cffi typing && \
-	$CONDAPATH install -c mingfeima mkldnn
+RUN pip install \
+      future \
+      numpy \
+      protobuf
 
-RUN apt install git && \
-	git clone --recursive https://github.com/pytorch/pytorch && \
-	cd /pytorch  && \
-	python setup.py install
+# Detectron depends
+RUN pip install \
+     numpy pyyaml matplotlib opencv-python>=3.2 setuptools Cython mock scipy
+
+# Hidden dependancies
+RUN pip install networkx enum typing
+
+# Build and install pytorch
+WORKDIR /packages
+RUN git clone --recursive https://github.com/pytorch/pytorch
+WORKDIR /packages/pytorch
+RUN python setup.py install
 
 ENV PYTHONPATH=/packages/pytorch/build:$PYTHONPATH
