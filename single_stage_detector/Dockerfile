@@ -7,7 +7,7 @@ RUN apt-get update && \
     apt-get install -y python3-tk python-pip
 
 # Necessary pip packages
-RUN pip install --upgrade pip
+RUN python -m pip install --upgrade pip
 RUN pip install Cython==0.28.4 \
                 matplotlib==2.2.2
 RUN python3 -m pip install pycocotools==2.0.0
