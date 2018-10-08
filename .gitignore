@@ -35,4 +35,13 @@
 .Spotlight-V100
 .Trashes
 ehthumbs.db
-Thumbs.db
+Thumbs.db*.bak
+*.deb.*
+../recommendation/pytorch/ml-20m
+../recommendation/pytorch/run
+*.bak
+*.de
+*.en
+recommendation/pytorch/run
+recommendation/pytorch/ml-20m
+translation/raw_data/

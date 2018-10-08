@@ -12,5 +12,9 @@ sudo apt install docker-ce -y
 
 # Setup docker permissions
 sudo groupadd docker
-sudo usermod -aG docker $USER
+sudo usermod -a -G docker $USER
+sudo chown "$USER":"$USER" /home/"$USER"/.docker -R
+sudo chmod g+rwx "/home/$USER/.docker" -R
+
+
 echo -e "\e[34Log out to reset the permmisions"

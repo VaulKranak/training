@@ -16,7 +16,6 @@ seed=${1:-"1"}
 processor=${2:-"gpu"}
 target=21.80
 
-echo $processor
 echo "running benchmark $processor"
 ./run_$processor.sh $seed $target
 
