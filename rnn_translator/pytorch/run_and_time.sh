@@ -16,7 +16,7 @@ seed=${1:-"1"}
 processor=${2:-"gpu"}
 target=21.80
 
-run.sh $seed $target
+./run.sh $seed $target
 
 sleep 3
 ret_code=$?; if [[ $ret_code != 0 ]]; then exit $ret_code; fi

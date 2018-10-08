@@ -167,6 +167,7 @@ def build_criterion(vocab_size, padding_idx, smoothing):
 
 
 def main():
+    print("*** main running ***")
     args = parse_args()
     print(args)
 

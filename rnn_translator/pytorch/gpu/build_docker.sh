@@ -1,4 +1,4 @@
 #!/bin/bash
 
-sudo docker build --build-arg A_NO_CUDA=0 -t mlperf/rnn-translator:gpu gpu/.
+sudo nvidia-docker build -t mlperf/rnn-translator:gpu . -f gpu/Dockerfile
 
