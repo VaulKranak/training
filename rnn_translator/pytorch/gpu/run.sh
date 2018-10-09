@@ -8,6 +8,8 @@ RESULTS_DIR='gnmt_wmt16'
 SEED=${1:-"1"}
 TARGET=${2:-"22.00"}
 
+echo "*** Running GPU Benchmark ***"
+
 # run training
 python3 -m multiproc train.py \
   --save ${RESULTS_DIR} \
