@@ -48,3 +48,7 @@ speech_recognition/LibriSpeech_dataset/
 speech_recognition/libri_test_manifest.csv
 speech_recognition/train-clean-100.tar.gzNZdc31.tmp
 
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
