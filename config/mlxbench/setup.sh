@@ -13,7 +13,7 @@ echo "*** checking if mlxbench package exists ***"
 
 if [[ ! -f $PACKAGEPATH ]] ; then
 	echo $PACKAGEPATH missing
-	echo "cloudpeca001.fm.intel.com\HDXPRT_Outbox\Ml-xBench" 
+	echo "cloudpeca001.fm.intel.com\\HDXPRT_Outbox\\Ml-xBench" 
 	exit
 fi
 

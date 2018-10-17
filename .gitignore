@@ -52,3 +52,4 @@ speech_recognition/train-clean-100.tar.gzNZdc31.tmp
 __pycache__/
 *.py[cod]
 *$py.class
+*.orig
