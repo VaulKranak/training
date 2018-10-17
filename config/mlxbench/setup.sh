@@ -3,11 +3,16 @@
 CALLDIR="$(pwd)"
 cd "$(dirname "$0")"
 SCRIPTDIR="$(pwd)"
+PROCESSOR=${1:-cpu}
 
-DEPENDANCIES=(cuda/cuda-9.2 tensorrt opencl-neo)
 PACKAGENAME=MLxBench_DeepLearning_Intel_DL_SDK.deb
 PACKAGEPATH=$SCRIPTDIR/$PACKAGENAME
 
+
+DEPENDANCIES_CPU=(opencl-neo)
+DEPENDANCIES_GPU=(tensorrt) #cuda/cuda-9.2 tensorrt)
+
+[$PROCESSOR == "cpu"] && DEPENDANCIES=$DEPENDANCIES_CPU || DEPENDANCIES=$DEPENDANCIES_GPU
 
 echo "*** checking if mlxbench package exists ***"
 
@@ -26,6 +31,8 @@ do
 		&& ../"$dependfolder"/install.sh \
 		|| echo "*** missing dependancy $dependfolder ***"
 done
+
+exit 1
 
 echo installing opencl tool
 echo type clinfo to see the opencl proccessor and information on the system
