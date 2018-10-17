@@ -34,7 +34,7 @@ sudo apt-get install clinfo
 echo "*** Installing MLxBench ***"
 
 sudo dpkg -i $PACKAGEPATH
-sudo apt-get -f install
+sudo apt-get -f install -y
 sudo apt-get update
 
 echo "*** setting up permissions ***"
