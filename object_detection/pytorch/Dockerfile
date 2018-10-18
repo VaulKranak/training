@@ -40,12 +40,24 @@ RUN pip install networkx enum typing
 
 # Build and install pytorch
 WORKDIR /packages
+<<<<<<< HEAD:object_detection/pytorch/Dockerfile
 RUN git clone --recursive https://github.com/pytorch/pytorch
 WORKDIR /packages/pytorch
 RUN python setup.py install
 
 ENV PYTHONPATH=/packages/pytorch/build:$PYTHONPATH
 
+=======
+RUN git clone https://github.com/pytorch/pytorch.git caffe2
+WORKDIR /packages/caffe2
+RUN git checkout v0.4.1
+RUN git submodule update --init --recursive
+WORKDIR /packages/caffe2
+RUN mkdir build
+WORKDIR /packages/caffe2/build
+RUN cmake ..
+RUN make install -j16
+>>>>>>> 4cc7dae8901a9b0833f689f64dc326518f851405:object_detection/caffe2/Dockerfile
 # Build and install the COCO API
 WORKDIR /packages
 RUN git clone https://github.com/cocodataset/cocoapi.git

@@ -19,18 +19,34 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from _ncf_tags import *
-from _resnet_tags import *
+from mlperf_compliance._gnmt_tags import *
+from mlperf_compliance._ncf_tags import *
+from mlperf_compliance._resnet_tags import *
+from mlperf_compliance._ssd_tags import *
+from mlperf_compliance._transformer_tags import *
+
 
 # ==============================================================================
 # == Benchmarks ================================================================
 # ==============================================================================
+
+# rnn_translator
+GNMT = "gnmt"
+
+# reinforcement/
+MINIGO = "minigo"
 
 # recommendation/
 NCF = "ncf"
 
 # image_classification/
 RESNET = "resnet"
+
+# single_stage_detector/
+SSD = "ssd"
+
+# object_detection/
+MASKRCNN = "maskrcnn"
 
 # translation/
 TRANSFORMER = "transformer"
@@ -83,7 +99,16 @@ CCE = "categorical_cross_entropy"
 
 SGD = "stochastic_gradient_descent"
 
+# Some conventions distinguish between "vanilla" SGD and SGD with momentum
+# (where vanilla SGD would be the specific case of momentum=0)
+SGD_WITH_MOMENTUM = "stochastic_gradient_descent_with_momentum"
+
+ADAM = "adam"
+LAZY_ADAM = "lazy_adam"
+
 TRUNCATED_NORMAL = "truncated_normal"
+
+RELU = "relu"
 
 
 # \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -161,6 +186,8 @@ OPT_NAME = "opt_name"
 
 OPT_LR = "opt_learning_rate"
 OPT_MOMENTUM = "opt_momentum"
+
+OPT_WEIGHT_DECAY = "opt_weight_decay"
 
 # beta1, beta2, and epsilon are optimizer hyperparameters associated with the
 # Adam optimizer and its variants (e.g. LazyAdam).
@@ -256,6 +283,95 @@ STDOUT_TAG_SET = {
 # ==============================================================================
 # == Benchmark tag sets ========================================================
 # ==============================================================================
+ALL_USED_TAGS = set()
+
+GNMT_TAGS = (
+    RUN_START,
+    RUN_STOP,
+    RUN_FINAL,
+    RUN_SET_RANDOM_SEED,
+
+    PREPROC_VOCAB_SIZE,
+    PREPROC_TOKENIZE_TRAINING,
+    PREPROC_TOKENIZE_EVAL,
+    PREPROC_NUM_TRAIN_EXAMPLES,
+    PREPROC_NUM_EVAL_EXAMPLES,
+
+    INPUT_SIZE,
+    INPUT_BATCH_SIZE,
+    INPUT_ORDER,
+
+    OPT_NAME,
+    OPT_LR,
+    OPT_HP_ADAM_BETA1,
+    OPT_HP_ADAM_BETA2,
+    OPT_HP_ADAM_EPSILON,
+
+    TRAIN_LOOP,
+    TRAIN_EPOCH,
+    TRAIN_CHECKPOINT,
+    TRAIN_HP_MAX_SEQ_LEN,
+
+    EVAL_START,
+    EVAL_SIZE,
+    EVAL_TARGET,
+    EVAL_ACCURACY,
+    EVAL_STOP,
+    EVAL_HP_BEAM_SIZE,
+    EVAL_HP_MAX_SEQ_LEN,
+    EVAL_HP_LEN_NORM_CONST,
+    EVAL_HP_LEN_NORM_FACTOR,
+    EVAL_HP_COV_PENALTY_FACTOR,
+
+    MODEL_HP_LOSS_FN,
+    MODEL_HP_LOSS_SMOOTHING,
+    MODEL_HP_NUM_LAYERS,
+    MODEL_HP_HIDDEN_SIZE,
+    MODEL_HP_DROPOUT
+)
+
+MASKRCNN_TAGS = (
+    RUN_START,
+    RUN_STOP,
+    RUN_FINAL,
+
+    INPUT_BATCH_SIZE,
+    INPUT_ORDER,
+
+    BACKBONE,
+    NMS_THRESHOLD,
+    NMS_MAX_DETECTIONS,
+
+    OPT_NAME,
+    OPT_LR,
+    OPT_MOMENTUM,
+    OPT_WEIGHT_DECAY,
+
+    TRAIN_LOOP,
+    TRAIN_EPOCH,
+
+    EVAL_START,
+    EVAL_SIZE,
+    EVAL_TARGET,
+    EVAL_ACCURACY,
+    EVAL_STOP,
+)
+
+MINIGO_TAGS = (
+    RUN_START,
+    RUN_STOP,
+    RUN_FINAL,
+    RUN_SET_RANDOM_SEED,
+
+    TRAIN_LOOP,
+    TRAIN_EPOCH,
+
+    EVAL_START,
+    EVAL_SIZE,
+    EVAL_TARGET,
+    EVAL_ACCURACY,
+    EVAL_STOP,
+)
 
 NCF_TAGS = (
     RUN_START,
@@ -330,6 +446,7 @@ RESNET_TAGS = (
     EVAL_TARGET,
     EVAL_ACCURACY,
     EVAL_STOP,
+    EVAL_EPOCH_OFFSET,
 
     MODEL_HP_LOSS_FN,
     MODEL_L2_REGULARIZATION,
@@ -349,3 +466,94 @@ RESNET_TAGS = (
     MODEL_HP_DENSE,
     MODEL_HP_RESNET_TOPOLOGY,
 )
+
+SSD_TAGS = (
+    RUN_START,
+    RUN_STOP,
+    RUN_FINAL,
+
+    INPUT_SIZE,
+    INPUT_BATCH_SIZE,
+    INPUT_ORDER,
+
+    BACKBONE,
+    FEATURE_SIZES,
+    STEPS,
+    SCALES,
+    ASPECT_RATIOS,
+    NUM_DEFAULTS_PER_CELL,
+    LOC_CONF_OUT_CHANNELS,
+    NUM_DEFAULTS,
+    NMS_THRESHOLD,
+    NMS_MAX_DETECTIONS,
+
+    NUM_CROPPING_ITERATIONS,
+    RANDOM_FLIP_PROBABILITY,
+    DATA_NORMALIZATION_MEAN,
+    DATA_NORMALIZATION_STD,
+
+    OPT_NAME,
+    OPT_LR,
+    OPT_MOMENTUM,
+    OPT_WEIGHT_DECAY,
+
+    TRAIN_LOOP,
+    TRAIN_EPOCH,
+
+    EVAL_START,
+    EVAL_SIZE,
+    EVAL_TARGET,
+    EVAL_ACCURACY,
+    EVAL_STOP,
+)
+
+TRANSFORMER_TAGS = (
+    RUN_START,
+    RUN_STOP,
+    RUN_FINAL,
+    RUN_SET_RANDOM_SEED,
+
+    PREPROC_NUM_TRAIN_EXAMPLES,
+    PREPROC_NUM_EVAL_EXAMPLES,
+    PREPROC_TOKENIZE_TRAINING,
+    PREPROC_TOKENIZE_EVAL,
+    PREPROC_VOCAB_SIZE,
+
+    INPUT_BATCH_SIZE,
+    INPUT_MAX_LENGTH,
+    INPUT_ORDER,
+
+    OPT_NAME,
+    OPT_LR,
+    OPT_HP_ADAM_BETA1,
+    OPT_HP_ADAM_BETA2,
+    OPT_HP_ADAM_EPSILON,
+
+    TRAIN_LOOP,
+    TRAIN_EPOCH,
+
+    EVAL_START,
+    EVAL_TARGET,
+    EVAL_ACCURACY,
+    EVAL_STOP,
+
+    MODEL_HP_INITIALIZER_GAIN,
+    MODEL_HP_VOCAB_SIZE,
+    MODEL_HP_NUM_HIDDEN_LAYERS,
+    MODEL_HP_ATTENTION_DENSE,
+    MODEL_HP_ATTENTION_NUM_HEADS,
+    MODEL_HP_ATTENTION_DROPOUT,
+    MODEL_HP_FFN_DENSE,
+    MODEL_HP_FFN_FILTER,
+    MODEL_HP_RELU_DROPOUT,
+    MODEL_HP_LAYER_POSTPROCESS_DROPOUT,
+    MODEL_HP_NORM,
+    MODEL_HP_SEQ_BEAM_SEARCH,
+)
+
+ALL_USED_TAGS.update(GNMT_TAGS)
+ALL_USED_TAGS.update(MASKRCNN_TAGS)
+ALL_USED_TAGS.update(NCF_TAGS)
+ALL_USED_TAGS.update(RESNET_TAGS)
+ALL_USED_TAGS.update(SSD_TAGS)
+ALL_USED_TAGS.update(TRANSFORMER_TAGS)
