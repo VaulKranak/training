@@ -29,6 +29,8 @@ import six
 import tensorflow as tf
 import urllib.request
 
+from mlperf_compliance import mlperf_log
+
 from utils import tokenizer
 
 # Data sources for training/evaluating the transformer translation model.
@@ -74,6 +76,8 @@ _VOCAB_FILE = "vocab.ende.%d" % _TARGET_VOCAB_SIZE
 
 # Strings to inclue in the generated files.
 _PREFIX = "wmt32k"
+_COMPILE_TAG = "compiled"
+_ENCODE_TAG = "encoded"
 _TRAIN_TAG = "train"
 _EVAL_TAG = "dev"  # Following WMT and Tensor2Tensor conventions, in which the
                    # evaluation datasets are tagged as "dev" for development.
@@ -229,7 +233,7 @@ def compile_files(data_dir, raw_files, tag):
     Full path of compiled input and target files.
   """
   tf.logging.info("Compiling files with tag %s." % tag)
-  filename = "%s-%s" % (_PREFIX, tag)
+  filename = "%s-%s-%s" % (_PREFIX, _COMPILE_TAG, tag)
   input_compiled_file = os.path.join(data_dir, filename + ".lang1")
   target_compiled_file = os.path.join(data_dir, filename + ".lang2")
 
@@ -301,6 +305,13 @@ def encode_and_save_files(
   for tmp_name, final_name in zip(tmp_filepaths, filepaths):
     tf.gfile.Rename(tmp_name, final_name)
 
+  if tag == _TRAIN_TAG:
+    mlperf_log.transformer_print(key=mlperf_log.PREPROC_NUM_TRAIN_EXAMPLES,
+                                 value=counter)
+  elif tag == _EVAL_TAG:
+    mlperf_log.transformer_print(key=mlperf_log.PREPROC_NUM_EVAL_EXAMPLES,
+                                 value=counter)
+
   tf.logging.info("Saved %d Examples", counter)
   return filepaths
 
@@ -308,7 +319,8 @@ def encode_and_save_files(
 def shard_filename(path, tag, shard_num, total_shards):
   """Create filename for data shard."""
   return os.path.join(
-      path, "%s-%s-%.5d-of-%.5d" % (_PREFIX, tag, shard_num, total_shards))
+      path, "%s-%s-%s-%.5d-of-%.5d" %
+      (_PREFIX, _ENCODE_TAG, tag, shard_num, total_shards))
 
 
 def shuffle_records(fname):
@@ -386,18 +398,24 @@ def main(unused_argv):
 
   # Tokenize and save data as Examples in the TFRecord format.
   tf.logging.info("Step 4/4: Preprocessing and saving data")
+  mlperf_log.transformer_print(key=mlperf_log.PREPROC_TOKENIZE_TRAINING)
   train_tfrecord_files = encode_and_save_files(
       subtokenizer, FLAGS.data_dir, compiled_train_files, _TRAIN_TAG,
       _TRAIN_SHARDS)
+  mlperf_log.transformer_print(key=mlperf_log.PREPROC_TOKENIZE_EVAL)
   encode_and_save_files(
       subtokenizer, FLAGS.data_dir, compiled_eval_files, _EVAL_TAG,
       _EVAL_SHARDS)
 
+  mlperf_log.transformer_print(key=mlperf_log.INPUT_ORDER)
   for fname in train_tfrecord_files:
     shuffle_records(fname)
 
 
 if __name__ == "__main__":
+
+  mlperf_log.ROOT_DIR_TRANSFORMER = os.path.dirname(os.path.realpath(__file__))
+
   parser = argparse.ArgumentParser()
   parser.add_argument(
       "--data_dir", "-dd", type=str, default="/tmp/translate_ende",

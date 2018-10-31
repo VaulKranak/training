@@ -24,7 +24,7 @@ from mlperf_compliance._ncf_tags import *
 from mlperf_compliance._resnet_tags import *
 from mlperf_compliance._ssd_tags import *
 from mlperf_compliance._transformer_tags import *
-
+from mlperf_compliance._maskrcnn_tags import *
 
 # ==============================================================================
 # == Benchmarks ================================================================
@@ -89,6 +89,9 @@ RUN_FINAL = "run_final"
 # Emit this tag in the place(s) where random seeds are set.
 RUN_SET_RANDOM_SEED = "run_set_random_seed"
 
+# Emit this tag when training data has been purged from volatile caches prior
+# to run start.
+RUN_CLEAR_CACHES = "run_clear_caches"
 
 # \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 # Common Values: Constants which are expected to be reported across many models.
@@ -154,6 +157,12 @@ INPUT_BATCH_SIZE = "input_batch_size"
 # should simply provide a good starting point to an interested party.
 INPUT_ORDER = "input_order"
 
+# The shard size (in items) when shuffling in the input pipeline.
+INPUT_SHARD = "input_shard"
+
+# The number of samples iver which BN stats are computed for normalization during training
+INPUT_BN_SPAN = "input_bn_span"
+
 
 # --------------------------------------
 # -- Data Augmentation and Alteration --
@@ -161,6 +170,8 @@ INPUT_ORDER = "input_order"
 
 # ResNet random cropping
 INPUT_CENTRAL_CROP = "input_central_crop"
+
+INPUT_CROP_USES_BBOXES = "input_crop_uses_bboxes"
 
 INPUT_DISTORTED_CROP_MIN_OBJ_COV = "input_distorted_crop_min_object_covered"
 INPUT_DISTORTED_CROP_RATIO_RANGE = "input_distorted_crop_aspect_ratio_range"
@@ -194,6 +205,9 @@ OPT_WEIGHT_DECAY = "opt_weight_decay"
 OPT_HP_ADAM_BETA1 = "opt_hp_Adam_beta1"
 OPT_HP_ADAM_BETA2 = "opt_hp_Adam_beta2"
 OPT_HP_ADAM_EPSILON = "opt_hp_Adam_epsilon"
+
+# The number of warm-up steps (SGD).
+OPT_LR_WARMUP_STEPS = "opt_learning_rate_warmup_steps"
 
 
 # \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -232,10 +246,14 @@ EVAL_TARGET = "eval_target"
 # The observed accuracy of the model at a given epoch.
 EVAL_ACCURACY = "eval_accuracy"
 
-# This tag should be emitted when the model has determined that it has met the
-# target quality set by the reference.
+# This tag should be emitted whenever the submission ends an evaluation pass
+# for a given set of weights.
 EVAL_STOP = "eval_stop"
 
+
+# The observed accuracy of the model at a given iteration. This is only for
+# models which evaluate at certain iterations instead of epochs.
+EVAL_ITERATION_ACCURACY = "eval_iteration_accuracy"
 
 # \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 #  Model: Tags for logging topology specific information.
@@ -290,6 +308,7 @@ GNMT_TAGS = (
     RUN_STOP,
     RUN_FINAL,
     RUN_SET_RANDOM_SEED,
+    RUN_CLEAR_CACHES,
 
     PREPROC_VOCAB_SIZE,
     PREPROC_TOKENIZE_TRAINING,
@@ -300,9 +319,11 @@ GNMT_TAGS = (
     INPUT_SIZE,
     INPUT_BATCH_SIZE,
     INPUT_ORDER,
+    INPUT_SHARD,
 
     OPT_NAME,
     OPT_LR,
+    OPT_LR_WARMUP_STEPS,
     OPT_HP_ADAM_BETA1,
     OPT_HP_ADAM_BETA2,
     OPT_HP_ADAM_EPSILON,
@@ -334,9 +355,11 @@ MASKRCNN_TAGS = (
     RUN_START,
     RUN_STOP,
     RUN_FINAL,
+    RUN_CLEAR_CACHES,
 
     INPUT_BATCH_SIZE,
     INPUT_ORDER,
+    INPUT_SHARD,
 
     BACKBONE,
     NMS_THRESHOLD,
@@ -355,6 +378,23 @@ MASKRCNN_TAGS = (
     EVAL_TARGET,
     EVAL_ACCURACY,
     EVAL_STOP,
+    INPUT_MEAN_SUBTRACTION,
+    INPUT_NORMALIZATION_STD,
+    INPUT_RESIZE,
+    INPUT_RESIZE_ASPECT_PRESERVING,
+    MIN_IMAGE_SIZE,
+    MAX_IMAGE_SIZE,
+    RUN_SET_RANDOM_SEED,
+    INPUT_RANDOM_FLIP,
+    RANDOM_FLIP_PROBABILITY,
+    FG_IOU_THRESHOLD,
+    BG_IOU_THRESHOLD,
+    RPN_PRE_NMS_TOP_N_TRAIN,
+    RPN_PRE_NMS_TOP_N_TEST,
+    RPN_POST_NMS_TOP_N_TRAIN,
+    RPN_POST_NMS_TOP_N_TEST,
+    BATCH_SIZE_TEST,
+    ASPECT_RATIOS,
 )
 
 MINIGO_TAGS = (
@@ -362,6 +402,9 @@ MINIGO_TAGS = (
     RUN_STOP,
     RUN_FINAL,
     RUN_SET_RANDOM_SEED,
+    RUN_CLEAR_CACHES,
+
+    INPUT_SHARD,
 
     TRAIN_LOOP,
     TRAIN_EPOCH,
@@ -377,6 +420,7 @@ NCF_TAGS = (
     RUN_START,
     RUN_STOP,
     RUN_FINAL,
+    RUN_CLEAR_CACHES,
 
     PREPROC_HP_MIN_RATINGS,
     PREPROC_HP_NUM_EVAL,
@@ -385,6 +429,7 @@ NCF_TAGS = (
     INPUT_SIZE,
     INPUT_BATCH_SIZE,
     INPUT_ORDER,
+    INPUT_SHARD,
     INPUT_HP_NUM_NEG,
     INPUT_HP_SAMPLE_TRAIN_REPLACEMENT,
     INPUT_STEP_TRAIN_NEG_GEN,
@@ -417,6 +462,7 @@ RESNET_TAGS = (
     RUN_STOP,
     RUN_FINAL,
     RUN_SET_RANDOM_SEED,
+    RUN_CLEAR_CACHES,
 
     PREPROC_NUM_TRAIN_EXAMPLES,
     PREPROC_NUM_EVAL_EXAMPLES,
@@ -424,7 +470,9 @@ RESNET_TAGS = (
     INPUT_SIZE,
     INPUT_BATCH_SIZE,
     INPUT_ORDER,
+    INPUT_SHARD,
     INPUT_CENTRAL_CROP,
+    INPUT_CROP_USES_BBOXES,
     INPUT_DISTORTED_CROP_MIN_OBJ_COV,
     INPUT_DISTORTED_CROP_RATIO_RANGE,
     INPUT_DISTORTED_CROP_AREA_RANGE,
@@ -433,9 +481,11 @@ RESNET_TAGS = (
     INPUT_RANDOM_FLIP,
     INPUT_RESIZE,
     INPUT_RESIZE_ASPECT_PRESERVING,
+    INPUT_BN_SPAN,
 
     OPT_NAME,
     OPT_LR,
+    OPT_LR_WARMUP_STEPS,
     OPT_MOMENTUM,
 
     TRAIN_LOOP,
@@ -471,10 +521,13 @@ SSD_TAGS = (
     RUN_START,
     RUN_STOP,
     RUN_FINAL,
+    RUN_CLEAR_CACHES,
 
     INPUT_SIZE,
     INPUT_BATCH_SIZE,
     INPUT_ORDER,
+    INPUT_SHARD,
+    INPUT_BN_SPAN,
 
     BACKBONE,
     FEATURE_SIZES,
@@ -496,6 +549,7 @@ SSD_TAGS = (
     OPT_LR,
     OPT_MOMENTUM,
     OPT_WEIGHT_DECAY,
+    OPT_LR_WARMUP_STEPS,
 
     TRAIN_LOOP,
     TRAIN_EPOCH,
@@ -505,6 +559,7 @@ SSD_TAGS = (
     EVAL_TARGET,
     EVAL_ACCURACY,
     EVAL_STOP,
+    EVAL_ITERATION_ACCURACY,
 )
 
 TRANSFORMER_TAGS = (
@@ -512,6 +567,7 @@ TRANSFORMER_TAGS = (
     RUN_STOP,
     RUN_FINAL,
     RUN_SET_RANDOM_SEED,
+    RUN_CLEAR_CACHES,
 
     PREPROC_NUM_TRAIN_EXAMPLES,
     PREPROC_NUM_EVAL_EXAMPLES,
@@ -522,9 +578,11 @@ TRANSFORMER_TAGS = (
     INPUT_BATCH_SIZE,
     INPUT_MAX_LENGTH,
     INPUT_ORDER,
+    INPUT_SHARD,
 
     OPT_NAME,
     OPT_LR,
+    OPT_LR_WARMUP_STEPS,
     OPT_HP_ADAM_BETA1,
     OPT_HP_ADAM_BETA2,
     OPT_HP_ADAM_EPSILON,
@@ -540,11 +598,11 @@ TRANSFORMER_TAGS = (
     MODEL_HP_INITIALIZER_GAIN,
     MODEL_HP_VOCAB_SIZE,
     MODEL_HP_NUM_HIDDEN_LAYERS,
+    MODEL_HP_EMBEDDING_SHARED_WEIGHTS,
     MODEL_HP_ATTENTION_DENSE,
-    MODEL_HP_ATTENTION_NUM_HEADS,
     MODEL_HP_ATTENTION_DROPOUT,
-    MODEL_HP_FFN_DENSE,
-    MODEL_HP_FFN_FILTER,
+    MODEL_HP_FFN_OUTPUT_DENSE,
+    MODEL_HP_FFN_FILTER_DENSE,
     MODEL_HP_RELU_DROPOUT,
     MODEL_HP_LAYER_POSTPROCESS_DROPOUT,
     MODEL_HP_NORM,
