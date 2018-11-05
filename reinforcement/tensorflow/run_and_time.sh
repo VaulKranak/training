@@ -4,6 +4,20 @@
 #   run_and_time.sh <random seed 1-5>
 
 
+seed=${1:-1}
+ACCURACY=${2:-0.03}
+PARALEL_SELFPLAY=${3:-16}
+
+Params=( seed ACCURACY PARALEL_SELFPLAY )
+for Param in "${Params[@]}"
+do
+    echo $Param = ${!Param}
+done
+
+
+sed -i "s/.TERMINATION_ACCURACY.: ..../\"TERMINATION_ACCURACY\": $ACCURACY/g" minigo/params/final.json 
+sed -i "s/\"NUM_PARALLEL_SELFPLAY\":.*,/\"NUM_PARALLEL_SELFPLAY\": $PARALEL_SELFPLAY,/g" minigo/params/final.json 
+
 set -e
 
 # start timing
@@ -13,11 +27,6 @@ echo "STARTING TIMING RUN AT $start_fmt"
 
 
 # run benchmark
-
-seed=${1:-1}
-
-echo "running benchmark with seed $seed"
-# The termination quality is set in params/final.json. See RAEDME.md.
 ./run.sh $seed
 sleep 3
 ret_code=$?; if [[ $ret_code != 0 ]]; then exit $ret_code; fi
