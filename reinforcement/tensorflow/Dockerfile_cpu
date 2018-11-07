@@ -29,6 +29,5 @@ WORKDIR /research/reinforcement
 
 RUN pip3 install --upgrade setuptools
 RUN pip3 install -r minigo/requirements.txt
-RUN pip3 install tensorflow
-
+RUN pip3 pip install -i https://pypi.anaconda.org/intel/simple tensorflow
 ENTRYPOINT ["/bin/bash"]
