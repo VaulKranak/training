@@ -1,4 +1,10 @@
 #!/bin/bash
 
-sudo ./run_cpu.sh
-sudo ./run_gpu.sh
+SEED=${1:-1}
+PROCESSORS=( cpu gpu )
+
+PROCESSOR=${2:-cpu} # cpu or gpu
+for PROCESSOR in "${PROCESSORS[@]}"
+do
+   ./run_docker.sh $SEED $PROCESSOR 
+done

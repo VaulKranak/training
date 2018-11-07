@@ -1,9 +1,11 @@
 #!/bin/bash
 
-SEED=1
+# command arguments
+SEED=${1:-1}
+PROCESSOR=${2:-cpu} # cpu or gpu
+
 NOW='date "+%F-%T"'
-PROCESSOR=gpu
 
 sudo nvidia-docker run -i -t --rm --ipc=host \
     --mount "type=bind,source=$(pwd),destination=/mlperf/experiment" \
-    mlperf/recommendation:$PROCESSOR $SEED | tee benchmark-$PROCESSOR-$NOW.log
+    recommendation/$PROCESSOR $SEED | tee benchmark-$PROCESSOR-$NOW.log

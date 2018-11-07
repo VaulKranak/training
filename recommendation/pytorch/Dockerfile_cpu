@@ -1,4 +1,4 @@
-FROM nvidia/cuda:9.1-cudnn7-devel-ubuntu16.04
+FROM ubuntu:16.04 
 
 # Set working directory
 WORKDIR /mlperf
@@ -48,9 +48,6 @@ RUN conda install numpy pyyaml setuptools cmake cffi typing
 RUN conda install -c intel mkl mkl-include
 RUN conda install -c mingfeima mkldnn
 
-# Add LAPACK support for the GPU
-RUN conda install -c pytorch magma-cuda91
-
 # Clone source
 WORKDIR /mlperf/github
 RUN git clone --recurse-submodules https://github.com/pytorch/pytorch
@@ -67,6 +64,3 @@ RUN python3 -m pip install -U pip
 RUN pip install -r requirements.txt
 
 ENTRYPOINT ["/mlperf/ncf/run_and_time.sh"]
-
-
-
