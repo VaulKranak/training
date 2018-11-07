@@ -16,11 +16,25 @@ echo "STARTING TIMING RUN AT $start_fmt"
 seed=${1:-1}
 threshold=${2:-0.635}
 processes=${3:-10}
+epochs=${4:-20}
+batch_size=${5:-2048}
+workers=${6:-8}
+factor=${7:-64}
+learining_rate=${8:-0.0005}
+layers=${9:-"256 256 128 64"}
 
-echo seed=$seed
-echo threshold=$threshold
-echo processes=$process
+echo ***** flags *****
+echo layers         $layers
+echo seed           $seed
+echo threshold      $threshold
+echo processes      $process
+echo epochs         $epochs
+echo batch_size     $batch_size
+echo workers        $workers
+echo factor         $factor
+echo learining_rate $learining_rate
 
+echo ""
 echo "unzip ml-20m.zip"
 if unzip -u ml-20m.zip
 then
@@ -33,8 +47,16 @@ then
 
     echo "Start training"
     t0=$(date +%s)
-	python $BASEDIR/ncf.py ml-20m -l 0.0005 -b 2048 --layers 256 256 128 64 -f 64 \
-		--seed $seed --threshold $threshold --processes $processes
+	python $BASEDIR/ncf.py ml-20m \
+            --layers $layers \
+	    --seed $seed \
+            --threshold $threshold \
+            --processes $processes \
+            --epochs $epochs \
+            --batch-size $batch_size \
+            --workers $workers \
+            --factor $factor \
+            --learning-rate $learning_rate 
     t1=$(date +%s)
 	delta=$(( $t1 - $t0 ))
     echo "Finish training in $delta seconds"
