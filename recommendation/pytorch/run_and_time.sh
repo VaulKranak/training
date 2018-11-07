@@ -3,9 +3,8 @@ set -e
 
 # runs benchmark and reports time to convergence
 # to use the script:
-#   run_and_time.sh <random seed 1-5>
+#   run_and_time.sh <seed 1-5> <threshold 0.##> <process ##>
 
-THRESHOLD=0.635
 BASEDIR=$(dirname -- "$0")
 
 # start timing
@@ -13,8 +12,14 @@ start=$(date +%s)
 start_fmt=$(date +%Y-%m-%d\ %r)
 echo "STARTING TIMING RUN AT $start_fmt"
 
-# Get command line seed
+# command line
 seed=${1:-1}
+threshold=${2:-0.635}
+processes=${3:-10}
+
+echo seed=$seed
+echo threshold=$threshold
+echo processes=$process
 
 echo "unzip ml-20m.zip"
 if unzip -u ml-20m.zip
@@ -29,7 +34,7 @@ then
     echo "Start training"
     t0=$(date +%s)
 	python $BASEDIR/ncf.py ml-20m -l 0.0005 -b 2048 --layers 256 256 128 64 -f 64 \
-		--seed $seed --threshold $THRESHOLD --processes 10
+		--seed $seed --threshold $threshold --processes $processes
     t1=$(date +%s)
 	delta=$(( $t1 - $t0 ))
     echo "Finish training in $delta seconds"
