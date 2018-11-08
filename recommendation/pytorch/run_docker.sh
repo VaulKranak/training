@@ -8,4 +8,4 @@ NOW=`date "+%F-%T"`
 
 echo sudo nvidia-docker run -i -t --rm --ipc=host \
     --mount "type=bind,source=$(pwd),destination=/mlperf/experiment" \
-    recommendation/$PROCESSOR ./run_and_time.sh $SEED | tee recommendation-${PROCESSOR}-$NOW.log
+    recommendation/$PROCESSOR $SEED | tee recommendation-${PROCESSOR}-$NOW.log
