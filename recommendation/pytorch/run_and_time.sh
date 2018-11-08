@@ -20,25 +20,14 @@ epochs=${4:-20}
 batch_size=${5:-2048}
 workers=${6:-8}
 factor=${7:-64}
-learining_rate=${8:-0.0005}
+learning_rate=${8:-0.0005}
 layers=${9:-"256 256 128 64"}
 
-echo ***** flags *****
-echo layers         $layers
-echo seed           $seed
-echo threshold      $threshold
-echo processes      $process
-echo epochs         $epochs
-echo batch_size     $batch_size
-echo workers        $workers
-echo factor         $factor
-echo learining_rate $learining_rate
-
-echo ""
 echo "unzip ml-20m.zip"
-if unzip -u ml-20m.zip
+if unzip -uo ml-20m.zip
 then
     echo "Start processing ml-20m/ratings.csv"
+	echo python $BASEDIR/convert.py ml-20m/ratings.csv ml-20m --negatives 999
     t0=$(date +%s)
 	python $BASEDIR/convert.py ml-20m/ratings.csv ml-20m --negatives 999
     t1=$(date +%s)
@@ -46,6 +35,16 @@ then
     echo "Finish processing ml-20m/ratings.csv in $delta seconds"
 
     echo "Start training"
+	echo python $BASEDIR/ncf.py ml-20m \
+            --layers $layers \
+	    --seed $seed \
+            --threshold $threshold \
+            --processes $processes \
+            --epochs $epochs \
+            --batch-size $batch_size \
+            --workers $workers \
+            --factor $factor \
+            --learning-rate $learning_rate 
     t0=$(date +%s)
 	python $BASEDIR/ncf.py ml-20m \
             --layers $layers \
@@ -77,8 +76,4 @@ else
 	echo "Problem unzipping ml-20.zip"
 	echo "Please run 'download_data.sh && verify_datset.sh' first"
 fi
-
-
-
-
 
