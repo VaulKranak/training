@@ -29,5 +29,5 @@ WORKDIR /research/reinforcement
 
 RUN pip3 install --upgrade setuptools
 RUN pip3 install -r minigo/requirements.txt
-RUN pip3 pip install -i https://pypi.anaconda.org/intel/simple tensorflow
+RUN pip3 install https://storage.googleapis.com/intel-optimized-tensorflow/tensorflow-1.11.0-cp35-cp35m-linux_x86_64.whl
 ENTRYPOINT ["/bin/bash"]

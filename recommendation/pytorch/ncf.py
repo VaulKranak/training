@@ -64,7 +64,7 @@ def predict(model, users, items, batch_size=1024, use_cuda=True):
             x = np.array(x)
             x = torch.from_numpy(x)
             if use_cuda:
-                x = x.cuda(async_=True)
+                x = x.cuda(async=True)
             return torch.autograd.Variable(x)
         outp = model(proc(user), proc(item), sigmoid=True)
         outp = outp.data.cpu().numpy()
@@ -240,9 +240,9 @@ def main():
             item = torch.autograd.Variable(item, requires_grad=False)
             label = torch.autograd.Variable(label, requires_grad=False)
             if use_cuda:
-                user = user.cuda(async_=True)
-                item = item.cuda(async_=True)
-                label = label.cuda(async_=True)
+                user = user.cuda(async=True)
+                item = item.cuda(async=True)
+                label = label.cuda(async=True)
 
             outputs = model(user, item)
             loss = criterion(outputs, label)
